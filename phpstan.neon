@@ -1,0 +1,21 @@
+includes:
+    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+parameters:
+    level: max
+    ignoreErrors:
+        - '#Function apply_filters invoked with \d+ parameters, \d+ required.#'
+    inferPrivatePropertyTypeFromConstructor: true
+    checkMissingIterableValueType: false
+    bootstrapFiles:
+        - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+        - vendor/php-stubs/woocommerce-stubs/woocommerce-stubs.php
+    paths:
+        - includes/
+        - controls/
+        - widgets/
+    excludePaths:
+        - vendor/
+    scanFiles:
+        - volcano-addons.php
+        - class-volcano-addons.php
+        - class-plugin.php

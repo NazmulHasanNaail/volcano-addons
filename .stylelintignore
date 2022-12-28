@@ -1,0 +1,7 @@
+**/*.js
+**/*.css
+**/*.php
+vendor/
+node_modules/
+assets/src/scss/libraries/
+assets/src/scss/icofont.scss
