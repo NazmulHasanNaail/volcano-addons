@@ -6,6 +6,7 @@
  */
 
 namespace VolcanoAddons;
+
 use Elementor\Plugin as ElementorPlugin;
 
 /**
@@ -104,12 +105,6 @@ class Plugin {
 		// Preload Settings.
 		$this->get_settings();
 
-		// Add font group
-		add_filter( 'elementor/fonts/groups', [ __CLASS__, 'add_font_group' ] );
-
-		// Add additional fonts
-		add_filter( 'elementor/fonts/additional_fonts', [ __CLASS__, 'add_additional_fonts' ] );
-
 		/**
 		 * Widget assets has to be registered before elementor preview calls the wp_enqueue_scripts...
 		 *
@@ -123,15 +118,10 @@ class Plugin {
 		 */
 
 		// Register widget styles.
-		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'widget_styles' ], 8 );
+//		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'widget_styles' ], 8 );
 
 		// Register widget scripts.
-		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'widget_scripts' ], 8 );
-
-		add_action( 'elementor/preview/enqueue_styles', [ __CLASS__, 'preview_style' ], PHP_INT_MIN );
-		add_action( 'elementor/editor/after_enqueue_scripts', [ __CLASS__, 'editor_scripts' ], PHP_INT_MIN );
-		//add_action( 'elementor/editor/after_enqueue_styles', [ __CLASS__, 'preview_style' ], PHP_INT_MIN );
-		//add_action( 'elementor/editor/after_enqueue_scripts', [ __CLASS__, 'preview_script' ], PHP_INT_MIN );
+//		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'widget_scripts' ], 8 );
 
 		// Register controls & widgets.
 		spl_autoload_register( [ __CLASS__, 'autoload' ] );
@@ -244,18 +234,23 @@ class Plugin {
 
 		//@TODO Use appropriate version for 3rd-party assets.
 		$scripts = [
-			'swiper-slider'               => [
+			'swiper-slider'       => [
 				'src'     => '/assets/dist/js/libraries/swiper-bundle',
 				'deps'    => [ 'jquery' ],
 				'version' => VOLCANO_ADDONS_VERSION,
 			],
-			'sweetalert2'                 => [
+			'sweetalert2'         => [
 				'src'     => '/assets/dist/js/libraries/sweetalert2.all',
 				'deps'    => [],
 				'version' => VOLCANO_ADDONS_VERSION,
 			],
-			'jquery-psgTimer'             => [
+			'jquery-psgTimer'     => [
 				'src'     => '/assets/dist/js/libraries/jquery.psgTimer',
+				'deps'    => [ 'jquery' ],
+				'version' => VOLCANO_ADDONS_VERSION,
+			],
+			'volcano-addons-core' => [
+				'src'     => '/assets/dist/js/volcano-addons-core',
 				'deps'    => [ 'jquery' ],
 				'version' => VOLCANO_ADDONS_VERSION,
 			],
@@ -310,7 +305,7 @@ class Plugin {
 				'version' => VOLCANO_ADDONS_VERSION,
 				'has_rtl' => true,
 			],
-			'psgTimer'      => [
+			'psgTimer'       => [
 				'src'     => '/assets/dist/css/library/psgTimer',
 				'deps'    => [],
 				'version' => VOLCANO_ADDONS_VERSION,
@@ -388,52 +383,15 @@ class Plugin {
 				'i18n'        => [
 					'volcano_addons_pro' => esc_html__( 'volcano Addons Pro', 'volcano-addons' ),
 					/* translators: 1. Promo Widget Name */
-					'promo.header'      => esc_html__( '%s Widget', 'volcano-addons' ),
+					'promo.header'       => esc_html__( '%s Widget', 'volcano-addons' ),
 					/* translators: 1. Promo Widget Name */
-					'promo.body'        => esc_html__( 'Use %s widget and a lot more exciting features and widgets to make your sites faster and better.', 'volcano-addons' ),
+					'promo.body'         => esc_html__( 'Use %s widget and a lot more exciting features and widgets to make your sites faster and better.', 'volcano-addons' ),
 				],
 				'pro_widgets' => self::instance()->register_pro_widgets(),
 				'mdv'         => apply_filters( 'volcano_addons/controller/multiple_default_value', [] ),
 			]
 		);
 
-	}
-
-	/**
-	 * Function add_font_group
-	 *
-	 * Load required plugin core files.
-	 *
-	 * @since 1.0.0
-	 * @access public
-	 */
-	public static function add_font_group( $font_groups ) {
-		$font_groups['custom_fonts'] = esc_html__( 'Custom Fonts', 'volcano-addons' );
-
-		return $font_groups;
-	}
-
-	/**
-	 * Function add_additional_fonts
-	 *
-	 * Load required plugin core files.
-	 *
-	 * @since 1.0.0
-	 * @access public
-	 */
-	public static function add_additional_fonts( $additional_fonts ) {
-		$theme_options = get_option( 'trix_theme_option' );
-		for ( $i = 1; $i <= 50; $i ++ ) {
-			if ( ! empty( $theme_options[ 'webfontName' . $i ] ) ) {
-				$additional_fonts[] = $theme_options[ 'webfontName' . $i ];
-			}
-		}
-
-		foreach ( $additional_fonts as $value ) {
-			$additional_fonts[ $value ] = 'custom_fonts';
-		}
-
-		return $additional_fonts;
 	}
 
 	/**
@@ -558,27 +516,7 @@ class Plugin {
 	public static function get_widgets() {
 
 		return apply_filters( 'volcano-addons/widgets', [
-			'woocommerce-product'      => [
-				'label'       => __( 'Woocommerce Product', 'volcano-addons' ),
-				'is_pro'      => true,
-				'is_new'      => false,
-				'is_active'   => true,
-				'is_upcoming' => false,
-				'demo_url'    => '',
-				'doc_url'     => '',
-				'youtube_url' => '',
-			],
-			'woocommerce-product-list' => [
-				'label'       => __( 'Woocommerce List', 'volcano-addons' ),
-				'is_pro'      => true,
-				'is_new'      => false,
-				'is_active'   => true,
-				'is_upcoming' => false,
-				'demo_url'    => '',
-				'doc_url'     => '',
-				'youtube_url' => '',
-			],
-			'countdown'                => [
+			'countdown' => [
 				'label'       => __( 'CountDown', 'volcano-addons' ),
 				'is_pro'      => false,
 				'is_new'      => false,
@@ -652,13 +590,6 @@ class Plugin {
 				}
 }
 		}
-	}
-
-	/**
-	 * @return array|array[]
-	 */
-	private function register_pro_widgets() {
-
 	}
 
 	/**

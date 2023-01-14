@@ -2,6 +2,7 @@
 
 namespace VolcanoAddons\Widgets;
 
+use VolcanoAddons\Volcano_Addons_Slider_Controller;
 use VolcanoAddons\Volcano_Widget;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Border;
@@ -18,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.1.0
  */
 class VolcanoAddons_Style_Countdown extends Volcano_Widget {
+	use Volcano_Addons_Slider_Controller;
 
 	/**
 	 * Retrieve the widget name.
@@ -461,7 +463,7 @@ class VolcanoAddons_Style_Countdown extends Volcano_Widget {
 
 		$this->end_controls_section();
 
-		$this->render_controller( 'style-controller-woocommerce-section-header' );
+		$this->render_slider_controller();
 
 	}
 
@@ -498,7 +500,9 @@ class VolcanoAddons_Style_Countdown extends Volcano_Widget {
 		?>
 
 
-		<div <?php $this->print_render_attribute_string( 'div' ); ?>></div>
+		<div <?php $this->print_render_attribute_string( 'div' ); ?>>
+
+		</div>
 		<?php
 	}
 

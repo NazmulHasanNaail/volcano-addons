@@ -308,7 +308,6 @@ class Volcano_Widget extends Widget_Base {
 		parent::print_render_attribute_string( $element );
 	}
 
-
 	protected function plugin_dependency_alert( $dependencies ) {
 		if ( isset( $dependencies['plugins'] ) ) {
 			$dependencies = [ $dependencies ];

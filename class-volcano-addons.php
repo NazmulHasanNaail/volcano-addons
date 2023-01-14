@@ -135,6 +135,7 @@ if ( ! class_exists( 'Volcano_Addons' ) ) {
 		 *
 		 */
 		private function include_files() {
+			require_once VOLCANO_ADDONS_PATH . 'includes/helper.php';
 			require_once VOLCANO_ADDONS_PATH . 'class-plugin.php';
 		}
 
